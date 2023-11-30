@@ -2,27 +2,27 @@
 
 namespace App\Repository;
 
-use App\Entity\Authors;
+use App\Entity\Author;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<Authors>
+ * @extends ServiceEntityRepository<Author>
  *
- * @method Authors|null find($id, $lockMode = null, $lockVersion = null)
- * @method Authors|null findOneBy(array $criteria, array $orderBy = null)
- * @method Authors[]    findAll()
- * @method Authors[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Author|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Author|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Author[]    findAll()
+ * @method Author[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class AuthorsRepository extends ServiceEntityRepository
+class AuthorRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Authors::class);
+        parent::__construct($registry, Author::class);
     }
 
 //    /**
-//     * @return Authors[] Returns an array of Authors objects
+//     * @return Author[] Returns an array of Author objects
 //     */
 //    public function findByExampleField($value): array
 //    {
@@ -36,7 +36,7 @@ class AuthorsRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?Authors
+//    public function findOneBySomeField($value): ?Author
 //    {
 //        return $this->createQueryBuilder('a')
 //            ->andWhere('a.exampleField = :val')

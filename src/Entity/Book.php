@@ -2,19 +2,22 @@
 
 namespace App\Entity;
 
+use App\Entity\Author;
+use App\Entity\Category;
 use Doctrine\DBAL\Types\Types;
-use App\Repository\BooksRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use App\Repository\BookRepository;
+use Doctrine\Common\Collections\Collection;
+use Gedmo\Mapping\Annotation\Timestampable;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 
-#[ORM\Entity(repositoryClass: BooksRepository::class)]
+#[ORM\Entity(repositoryClass: BookRepository::class)]
 #[UniqueEntity(fields: ['title'], message: 'le titre est déjà utilisé par un autre livre')]
 
-class Books
+class Book
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -42,17 +45,22 @@ class Books
     private ?string $Resume = null;
 
     #[ORM\Column]
+    #[Timestampable(on: 'create')]
     private ?\DateTimeImmutable $createdAt = null;
 
-    #[ORM\ManyToMany(targetEntity: Categories::class, mappedBy: 'books')]
-    private Collection $categories;
+    #[ORM\ManyToMany(targetEntity: Category::class, mappedBy: 'book')]
+    private Collection $category;
 
-    #[ORM\ManyToOne(inversedBy: 'books')]
-    private ?Authors $author = null;
+    #[ORM\ManyToOne(inversedBy: 'book')]
+    private ?Author $author = null;
+
+    #[ORM\Column]
+    #[Timestampable(on: 'update')]
+    private ?\DateTimeImmutable $updateAt = null;
 
     public function __construct()
     {
-        $this->categories = new ArrayCollection();
+        $this->category = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -97,40 +105,52 @@ class Books
     }
 
     /**
-     * @return Collection<int, Categories>
+     * @return Collection<int, Category>
      */
     public function getCategories(): Collection
     {
-        return $this->categories;
+        return $this->category;
     }
 
-    public function addCategory(Categories $category): static
+    public function addCategory(Category $category): static
     {
-        if (!$this->categories->contains($category)) {
-            $this->categories->add($category);
+        if (!$this->category->contains($category)) {
+            $this->category->add($category);
             $category->addBook($this);
         }
 
         return $this;
     }
 
-    public function removeCategory(Categories $category): static
+    public function removeCategory(Category $category): static
     {
-        if ($this->categories->removeElement($category)) {
+        if ($this->category->removeElement($category)) {
             $category->removeBook($this);
         }
 
         return $this;
     }
 
-    public function getAuthor(): ?Authors
+    public function getAuthor(): ?Author
     {
         return $this->author;
     }
 
-    public function setAuthor(?Authors $author): static
+    public function setAuthor(?Author $author): static
     {
         $this->author = $author;
+
+        return $this;
+    }
+
+    public function getUpdateAt(): ?\DateTimeImmutable
+    {
+        return $this->updateAt;
+    }
+
+    public function setUpdateAt(\DateTimeImmutable $updateAt): static
+    {
+        $this->updateAt = $updateAt;
 
         return $this;
     }

@@ -2,17 +2,18 @@
 
 namespace App\Entity;
 
+use App\Entity\Book;
 use Doctrine\ORM\Mapping as ORM;
-use App\Repository\CategoriesRepository;
+use App\Repository\CategoryRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 
 #[UniqueEntity(fields: ['title'], message: "Le nom de la catégorie est déjà utilisé par une autre")]
-#[ORM\Entity(repositoryClass: CategoriesRepository::class)]
-class Categories
+#[ORM\Entity(repositoryClass: CategoryRepository::class)]
+class Category
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -29,12 +30,12 @@ class Categories
     #[Assert\NotBlank()]
     private ?string $Title = null;
 
-    #[ORM\ManyToMany(targetEntity: Books::class, inversedBy: 'categories')]
-    private Collection $books;
+    #[ORM\ManyToMany(targetEntity: Book::class, inversedBy: 'category')]
+    private Collection $book;
 
     public function __construct()
     {
-        $this->books = new ArrayCollection();
+        $this->book = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -55,25 +56,25 @@ class Categories
     }
 
     /**
-     * @return Collection<int, Books>
+     * @return Collection<int, book>
      */
     public function getBooks(): Collection
     {
-        return $this->books;
+        return $this->book;
     }
 
-    public function addBook(Books $book): static
+    public function addBook(Book $book): static
     {
-        if (!$this->books->contains($book)) {
-            $this->books->add($book);
+        if (!$this->book->contains($book)) {
+            $this->book->add($book);
         }
 
         return $this;
     }
 
-    public function removeBook(Books $book): static
+    public function removeBook(Book $book): static
     {
-        $this->books->removeElement($book);
+        $this->book->removeElement($book);
 
         return $this;
     }

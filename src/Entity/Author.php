@@ -2,15 +2,18 @@
 
 namespace App\Entity;
 
+use App\Entity\Book;
 use Doctrine\ORM\Mapping as ORM;
-use App\Repository\AuthorsRepository;
+use App\Repository\AuthorRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
+use Monolog\DateTimeImmutable;
 
 
-#[ORM\Entity(repositoryClass: AuthorsRepository::class)]
-class Authors
+
+#[ORM\Entity(repositoryClass: AuthorRepository::class)]
+class Author
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -37,15 +40,13 @@ class Authors
     #[Assert\NotBlank()]
     private ?string $Last_name = null;
 
-    #[ORM\Column]
-    private ?\DateTimeImmutable $createdAt = null;
 
-    #[ORM\OneToMany(mappedBy: 'author', targetEntity: Books::class)]
-    private Collection $books;
+    #[ORM\OneToMany(mappedBy: 'author', targetEntity: Book::class)]
+    private Collection $book;
 
     public function __construct()
     {
-        $this->books = new ArrayCollection();
+        $this->book = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -77,39 +78,27 @@ class Authors
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeImmutable
-    {
-        return $this->createdAt;
-    }
-
-    public function setCreatedAt(\DateTimeImmutable $createdAt): static
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
     /**
-     * @return Collection<int, Books>
+     * @return Collection<int, book>
      */
-    public function getBooks(): Collection
+    public function getbook(): Collection
     {
-        return $this->books;
+        return $this->book;
     }
 
-    public function addBook(Books $book): static
+    public function addBook(Book $book): static
     {
-        if (!$this->books->contains($book)) {
-            $this->books->add($book);
+        if (!$this->book->contains($book)) {
+            $this->book->add($book);
             $book->setAuthor($this);
         }
 
         return $this;
     }
 
-    public function removeBook(Books $book): static
+    public function removeBook(Book $book): static
     {
-        if ($this->books->removeElement($book)) {
+        if ($this->book->removeElement($book)) {
             // set the owning side to null (unless already changed)
             if ($book->getAuthor() === $this) {
                 $book->setAuthor(null);
