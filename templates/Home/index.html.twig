@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Homepage |
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+    <section class="latest-book mt-4">
+        <h2 class="text-center">Last Books</h2>
+        <a href="/books" class="btn btn-primary">Books list</a>
+        <div class="container blog-card-list">
+        	{% for book in books %}
+				{% include 'Components/_card.html.twig' %}
+			{% endfor %}
+        </div>
+    </section>
+{% endblock %}

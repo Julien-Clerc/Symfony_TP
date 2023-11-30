@@ -1,0 +1,8 @@
+@mixin flexbox($justify-content: flex-start, $aligne-items: center, $flex-wrap: wrap, $gap:1em, $flex-direction:row ) {
+    display: flex;
+    flex-wrap: $flex-wrap;
+    justify-content: $justify-content;
+    align-items: $aligne-items;
+    gap: $gap;
+    flex-direction: $flex-direction;
+}

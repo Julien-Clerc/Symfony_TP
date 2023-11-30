@@ -28,7 +28,7 @@ class Category
         maxMessage: 'Le titre ne peut pas faire plus de {{ limit }} caractères.'
     )]
     #[Assert\NotBlank()]
-    private ?string $Title = null;
+    private ?string $title = null;
 
     #[ORM\ManyToMany(targetEntity: Book::class, inversedBy: 'category')]
     private Collection $book;
@@ -45,12 +45,12 @@ class Category
 
     public function getTitle(): ?string
     {
-        return $this->Title;
+        return $this->title;
     }
 
-    public function setTitle(string $Title): static
+    public function setTitle(string $title): static
     {
-        $this->Title = $Title;
+        $this->title = $title;
 
         return $this;
     }

@@ -1,0 +1,17 @@
+.banner {
+    @include flexbox(center, center, no-wrap, 0);
+    height: 75vh;
+    background: center / cover url('../../images/ItSFine.jpg');
+
+    &-header {
+        padding: 0.6em 1em;
+        border: 1px solid rgba(54, 22, 1, 0.7);
+        border-radius: $border-radius;
+        -webkit-backdrop-filter: blur(5px);
+        backdrop-filter: blur(5px);
+
+        &-title {
+            color: rgb(10, 10, 10)
+        }
+    }
+}

@@ -1,0 +1,14 @@
+{% extends "base.html.twig" %}
+
+{% block title %}
+	Création d'un livre |
+	{{ parent() }}
+{% endblock %}
+
+{% block body %}
+	<section class="container mt-4">
+		<h1 class="text-center">Création d'un book</h1>
+		{% include 'Book/_form.html.twig' with {buttonLabel: 'Créer'} %}
+		<a href="{{ path('books.index') }}" class="btn btn-primary mt-4">Retour à la liste</a>
+	</section>
+{% endblock %}

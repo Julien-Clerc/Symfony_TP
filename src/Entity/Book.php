@@ -34,7 +34,7 @@ class Book
     #[Assert\NotBlank(
         message: 'Le titre ne peut pas être vide'
     )]
-    private ?string $Title = null;
+    private ?string $title = null;
 
     #[ORM\Column(type: Types::TEXT)]
     #[Assert\NotBlank()]
@@ -49,10 +49,10 @@ class Book
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\ManyToMany(targetEntity: Category::class, mappedBy: 'book')]
-    private Collection $category;
+    private ?Collection $category = null;
 
-    #[ORM\ManyToOne(inversedBy: 'book')]
-    private ?Author $author = null;
+    #[ORM\ManyToOne(targetEntity: Author::class, inversedBy: 'book')]
+    private Collection $author;
 
     #[ORM\Column]
     #[Timestampable(on: 'update')]
@@ -70,12 +70,12 @@ class Book
 
     public function getTitle(): ?string
     {
-        return $this->Title;
+        return $this->title;
     }
 
-    public function setTitle(string $Title): static
+    public function setTitle(string $title): static
     {
-        $this->Title = $Title;
+        $this->Title = $title;
 
         return $this;
     }
@@ -131,15 +131,17 @@ class Book
         return $this;
     }
 
-    public function getAuthor(): ?Author
+    public function getAuthor(): Collection
     {
         return $this->author;
     }
 
-    public function setAuthor(?Author $author): static
+    public function setAuthor(Author $author): static
     {
-        $this->author = $author;
-
+        if (!$this->author->contains($author)) {
+            $this->author->add($author);
+            $author->addBook($this);
+        }
         return $this;
     }
 

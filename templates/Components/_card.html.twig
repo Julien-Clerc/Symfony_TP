@@ -1,0 +1,32 @@
+<div class="blog-card">
+    <div class="blog-card-img">
+        <a href="{{ path('app.books.show', {slug: book.slug}) }}">
+            ICI
+        </a>
+        {# {% if book.imageName %}
+            <img src="{{ vich_uploader_asset(book) }}" alt="{{ book.title }}" loading='lazy'>
+        {% else %}
+            <img src="https://picsum.photos/350/240" alt="{{ book.title }}" loading='lazy'>
+        {% endif %} #}
+    </div>
+    <div class="blog-card-content">
+        <p class="blog-card-content-date">
+            <i class="bi bi-calendar-range-fill"></i>
+            {{ book.createdAt|format_datetime('full', 'none') }}
+        </p>
+        <a href="{{ path('app.books.show', {slug: book.slug}) }}">
+            <h2 class="blog-card-content-header">{{ book.title }}</h2>
+        </a>
+        <p class="blog-card-content-text">{{ book.content|striptags|slice(0,150) ~ '...' }}</p>
+        <p class="blog-card-content-user text-muted">{{ book.author.fullName }}</p>
+        {% if app.request.get('_route') == 'books.index' %}
+            <div class="d-flex justify-content-between align-items-center">
+                <a href="{{ path('books.update', {id: book.id}) }}" class="btn btn-warning">
+                    <i class="bi bi-pencil-square"></i>
+                    Update
+                </a>
+                {% include 'Book/_deleteForm.html.twig' %}
+            </div>
+        {% endif %}
+    </div>
+</div>
